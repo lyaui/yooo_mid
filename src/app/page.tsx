@@ -1,7 +1,20 @@
+"use client";
+
+import type { ResultRoom } from "@/types";
+import RoomAllocation from "@/components/RoomAllocation";
+
 export default function Home() {
-  return (
-    <div className='grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]'>
-      <main className='flex flex-col gap-8 row-start-2 items-center sm:items-start'></main>
-    </div>
-  );
+  const guest = {
+    adult: 7,
+    children: 3,
+  };
+  const rooms = [
+    { roomPrice: 1000, adultPrice: 200, childPrice: 100, capacity: 4 },
+    { roomPrice: 0, adultPrice: 500, childPrice: 500, capacity: 4 },
+    { roomPrice: 500, adultPrice: 300, childPrice: 200, capacity: 4 },
+  ];
+  const handleChange = (result: ResultRoom[]) => {
+    console.log(result);
+  };
+  return <RoomAllocation guest={guest} rooms={rooms} onChange={handleChange} />;
 }
