@@ -1,3 +1,8 @@
+export enum Identity {
+  adult = "adult",
+  child = "child",
+}
+
 export type Guest = {
   adult: number;
   child: number;
