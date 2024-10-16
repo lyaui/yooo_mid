@@ -57,7 +57,7 @@ function Room({
 
   const getIdentityMax = (identity: Identity) => {
     // 情境 1: 不超過單房規格的 capacity
-    const remainCapacity = roomSpec.capacity - (allocatedRoom[identity] || 0);
+    const remainCapacity = roomSpec.capacity - allocatedRoom[identity];
 
     // 情境 2：剩餘人數 + 現 identity 人數
     const remainIdentity = guest[identity] - currentTotal[identity];
