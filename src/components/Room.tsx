@@ -11,11 +11,16 @@ type RoomProps = {
 };
 
 function Room({
-  roomSpec,
-  allocatedRoom,
-  onChange,
-  guest,
-  currentTotal,
+  roomSpec = {
+    roomPrice: 0,
+    adultPrice: 0,
+    childPrice: 0,
+    capacity: 0,
+  },
+  allocatedRoom = { adult: 0, child: 0, price: 0 },
+  onChange = () => {},
+  guest = { adult: 0, child: 0 },
+  currentTotal = { adult: 0, child: 0 },
 }: RoomProps) {
   const { adult = 0, child = 0 } = allocatedRoom || {};
   const totalPeople = allocatedRoom?.adult + allocatedRoom?.child;
@@ -50,14 +55,22 @@ function Room({
     onChange(updateValue);
   };
 
+  const getIdentityMax = (identity: Identity) => {
+    // 情境 1: 不超過單房規格的 capacity
+    const remainCapacity = roomSpec.capacity - (allocatedRoom[identity] || 0);
+
+    // 情境 2：剩餘人數 + 現 identity 人數
+    const remainIdentity = guest[identity] - currentTotal[identity];
+    return Math.max(remainCapacity, remainIdentity + allocatedRoom[identity]);
+  };
+
   const guests = [
     {
       title: "大人",
       desc: "年齡 20+",
       props: {
         min: 0,
-        max: 10,
-        step: 1,
+        max: getIdentityMax(Identity.adult),
         name: Identity.adult,
         value: adult,
         disabled: false,
@@ -68,8 +81,7 @@ function Room({
       desc: null,
       props: {
         min: 0,
-        max: 10,
-        step: 1,
+        max: getIdentityMax(Identity.child),
         name: Identity.child,
         value: child,
         disabled: false,
