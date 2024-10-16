@@ -1,10 +1,10 @@
-import type { Room } from "@/types";
+import type { RoomSpec } from "@/types";
 import CustomInputNumber from "@/components/CustomInputNumber";
 
 type RoomProps = {
-  room: Room;
+  roomSpec: RoomSpec;
 };
-function Room({ room }: RoomProps) {
+function Room({ roomSpec }: RoomProps) {
   const totalPeople = 5;
   return (
     <div className={"flex flex-col gap-3 py-6"}>

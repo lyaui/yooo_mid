@@ -1,9 +1,9 @@
 export type Guest = {
   adult: number;
-  children: number;
+  child: number;
 };
 
-export type Room = {
+export type RoomSpec = {
   roomPrice: number;
   adultPrice: number;
   childPrice: number;
@@ -12,6 +12,6 @@ export type Room = {
 
 export type ResultRoom = {
   adult: number;
-  children: number;
+  child: number;
   price: number;
 };
