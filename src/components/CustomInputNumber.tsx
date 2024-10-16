@@ -58,6 +58,9 @@ function CustomInputNumber({
     onChange(event);
   };
 
+  const handleDecrement = () => handleChange(ButtonAction.decrement);
+  const handleIncrement = () => handleChange(ButtonAction.increment);
+
   const handleButtonBlur = () => {
     const event = {
       target: { name, value: value.toString() },
@@ -69,7 +72,8 @@ function CustomInputNumber({
     <div className="flex gap-2">
       {/* decrement */}
       <Button
-        onClick={() => handleChange(ButtonAction.decrement)}
+        onClick={handleDecrement}
+        onLongPress={handleDecrement}
         onBlur={handleButtonBlur}
         disabled={disabled || value === min}
       >
@@ -91,7 +95,8 @@ function CustomInputNumber({
       />
       {/* increment */}
       <Button
-        onClick={() => handleChange(ButtonAction.increment)}
+        onClick={handleIncrement}
+        onLongPress={handleIncrement}
         onBlur={handleButtonBlur}
         disabled={disabled || value === max}
       >
