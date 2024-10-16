@@ -6,9 +6,8 @@ import Room from "@/components/Room";
 
 /* V guest 人數必定在所有 room 總和可容納人數內。
    V CustomInputNumber 的 step 為 1。
-   ○ 當 guest 人數抵達上限值時，加號按鈕 disable。
-   ○ 當 guest 人數抵達下限值時，減號按鈕 disable。
-   ○ 部分 Test Case
+   V 當 guest 人數抵達上限值時，加號按鈕 disable。
+   V 當 guest 人數抵達下限值時，減號按鈕 disable。
    V 調整 guest 跟 room 的數量確認顯示是否正常
    V 調整房間分配人數確認尚未分配人數顯示是否正常
    V onChange 不能收到 result 總合超過 guest 人數的值 */
