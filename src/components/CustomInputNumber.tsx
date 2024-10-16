@@ -15,15 +15,20 @@ import Button from "@/components/Button";
   V onChange 時驗證是否為正確 Event.target.name 跟 Event.target.value
   V disabled 等於 true 時，應無法改變或是輸入 value，且需有 disabled 樣
   式
-  ■ 調整 min 或 max 確認加減變化是否在範圍內
-  ■ 調整 step 確認加減變化是否符合 step 間隔
+  V 調整 min 或 max 確認加減變化是否在範圍內
+  V 調整 step 確認加減變化是否符合 step 間隔
   V 點擊加減號按鈕請觸發 <input> 的 InputEvent 
 */
+
+enum ButtonAction {
+  increment = 0,
+  decrement = 1,
+}
 
 type CustomInputNumberProps = {
   min: number;
   max: number;
-  step?: number;
+  step: number;
   name: string;
   value: number;
   disabled: boolean;
@@ -41,22 +46,15 @@ function CustomInputNumber({
   onChange,
   onBlur,
 }: CustomInputNumberProps) {
-  const handleDecrement = () => {
-    if (value <= min) return;
-    const updateVal = value - step;
-    // input event.target.value must be string
-    const event = {
-      target: { name, value: updateVal.toString() },
-    } as ChangeEvent<HTMLInputElement>;
-    onChange(event);
-  };
+  const handleChange = (action: ButtonAction) => {
+    const updateVal =
+      action === ButtonAction.increment ? value + step : value - step;
+    if (updateVal < min || updateVal > max) return;
 
-  const handleIncrement = () => {
-    if (value >= max) return;
-    const updateVal = value + step;
     const event = {
       target: { name, value: updateVal.toString() },
     } as ChangeEvent<HTMLInputElement>;
+
     onChange(event);
   };
 
@@ -71,7 +69,7 @@ function CustomInputNumber({
     <div className="flex gap-2">
       {/* decrement */}
       <Button
-        onClick={handleDecrement}
+        onClick={() => handleChange(ButtonAction.decrement)}
         onBlur={handleButtonBlur}
         disabled={disabled || value === min}
       >
@@ -93,7 +91,7 @@ function CustomInputNumber({
       />
       {/* increment */}
       <Button
-        onClick={handleIncrement}
+        onClick={() => handleChange(ButtonAction.increment)}
         onBlur={handleButtonBlur}
         disabled={disabled || value === max}
       >
