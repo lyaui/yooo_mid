@@ -1,16 +1,37 @@
-import { memo } from "react";
-import type { ChangeEvent } from "react";
-import type { RoomSpec, ResultRoom } from "@/types";
+import type { ChangeEvent, FocusEvent } from "react";
+import { Identity, Guest, RoomSpec, ResultRoom } from "@/types";
 import CustomInputNumber from "@/components/CustomInputNumber";
 
 type RoomProps = {
   roomSpec: RoomSpec;
   allocatedRoom: ResultRoom;
   onChange: (val: ResultRoom) => void;
+  guest: Guest;
+  currentTotal: Guest;
 };
-function Room({ roomSpec, allocatedRoom, onChange }: RoomProps) {
+
+function Room({
+  roomSpec,
+  allocatedRoom,
+  onChange,
+  guest,
+  currentTotal,
+}: RoomProps) {
   const { adult = 0, child = 0 } = allocatedRoom || {};
   const totalPeople = allocatedRoom?.adult + allocatedRoom?.child;
+
+  const validateResult = (identity: Identity, updateVal: ResultRoom) => {
+    // 確認人數是否在 capacity 內
+    if (updateVal.adult + updateVal.child > roomSpec.capacity) return false;
+
+    // 確認更新的 adult 或 child 的剩餘人數必 >=0
+    const upcomingTotal =
+      currentTotal[identity] - allocatedRoom[identity] + updateVal[identity];
+    const upcomingRemain = guest[identity] - upcomingTotal;
+    if (upcomingRemain < 0) return false;
+
+    return true;
+  };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -23,6 +44,9 @@ function Room({ roomSpec, allocatedRoom, onChange }: RoomProps) {
       roomPrice +
       adultPrice * updateValue.adult +
       childPrice * updateValue.child;
+
+    if (!validateResult(name as Identity, updateValue)) return;
+
     onChange(updateValue);
   };
 
@@ -32,9 +56,9 @@ function Room({ roomSpec, allocatedRoom, onChange }: RoomProps) {
       desc: "年齡 20+",
       props: {
         min: 0,
-        max: 100,
+        max: 10,
         step: 1,
-        name: "adult",
+        name: Identity.adult,
         value: adult,
         disabled: false,
       },
@@ -44,9 +68,9 @@ function Room({ roomSpec, allocatedRoom, onChange }: RoomProps) {
       desc: null,
       props: {
         min: 0,
-        max: 100,
+        max: 10,
         step: 1,
-        name: "child",
+        name: Identity.child,
         value: child,
         disabled: false,
       },
@@ -78,4 +102,4 @@ function Room({ roomSpec, allocatedRoom, onChange }: RoomProps) {
   );
 }
 
-export default memo(Room);
+export default Room;
