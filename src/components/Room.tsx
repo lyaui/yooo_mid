@@ -45,8 +45,9 @@ function Room({
       ...allocatedRoom,
       [name]: +value,
     };
+
     updateValue.price =
-      roomPrice +
+      (updateValue.adult + updateValue.child > 0 ? roomPrice : 0) +
       adultPrice * updateValue.adult +
       childPrice * updateValue.child;
 
