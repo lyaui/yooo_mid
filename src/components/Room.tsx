@@ -93,7 +93,8 @@ function Room({
   return (
     <div className={"flex flex-col gap-3 py-6"}>
       <div className="mb-2 text-lg font-medium">
-        房間： {totalPeople || 0} 人
+        {`${roomSpec.capacity} 人房 | ${totalPeople || 0} 人共
+        ${allocatedRoom.price} 元`}
       </div>
       {guests.map((_guest) => (
         <div key={_guest.title} className="flex items-center justify-between">
